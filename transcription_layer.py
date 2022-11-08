@@ -13,8 +13,8 @@ def tg_obj2tg(tg, file_name):
     tg.save(file_name, format="short_textgrid", includeBlankSpaces=True)
 
 
-def align_tg(file_name):
-    tg_obj2tg(alignBoundariesAcrossTiers(file_name, maxDifference=0.2), file_name)
+def align_tg(file_name):  # note! also merge blank values
+    tg_obj2tg(alignBoundariesAcrossTiers(file_name, maxDifference=0.1), file_name)
 
 
 def replace_blank_translation(file_name):  # new_version to rewrite
@@ -33,7 +33,7 @@ def replace_blank_translation(file_name):  # new_version to rewrite
         translation_found = False
 
         for start_tl, stop_tl, label_tl in translation_entries:
-            if start_tc == start_tl and stop_tc == stop_tl:
+            if start_tc == start_tl:
                 translation_found = True
                 if label_tl == '' and len(label_tc) > 0:
                     new_translation_entries[i] = (start_tl, stop_tl, 'NULL')
@@ -98,11 +98,11 @@ def translit_all():
         except Exception as ex:
             print(f' Error when transliterating {tg_name}: {ex}')
 
-        try:
-            align_tg(tg_output_path)
-
-        except Exception as ex:
-            print(f' Error when aligning {tg_name}: {ex}')
+        # try:
+        #     align_tg(tg_output_path)
+        #
+        # except Exception as ex:
+        #     print(f' Error when aligning {tg_name}: {ex}')
 
         try:
             replace_blank_translation(tg_output_path)
