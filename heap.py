@@ -48,7 +48,7 @@ class MakeGlossLine(ParseTextGrid):
             try:
                 trans_line = translation[i][2]
             except IndexError:
-                trans_line = 'NO TRANSLATION'
+                trans_line = 'IndexError: Translation and transcription tiers have different length'
 
             lines.append((transc_line, Ctransc_line, trans_line))
 
