@@ -17,7 +17,7 @@ def align_tg(file_name):  # note! also merge blank values
     tg_obj2tg(alignBoundariesAcrossTiers(file_name, maxDifference=0.1), file_name)
 
 
-def replace_blank_translation(file_name):  # new_version to rewrite
+def replace_blank_translation(file_name):  # new_version to rewrite. save outside the func
     """
     Without this translation will move in the heap.
     Write NULL where there is smth in transcription, but corresponding translation is empty.
@@ -41,10 +41,9 @@ def replace_blank_translation(file_name):  # new_version to rewrite
             i += 1
 
         if not translation_found:
-            raise IndexError(label_tc)
+            print(f'No translation for {label_tc}')
 
     new_translation_entries.sort(key=lambda x: x[0])
-
 
     new_translation = translation.new(name='2', entryList=new_translation_entries)
     tg.addTier(new_translation)
