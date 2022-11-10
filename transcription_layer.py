@@ -30,7 +30,8 @@ def replace_blank_translation(file_name):  # new_version to rewrite. save outsid
     translation = tg.removeTier('2')
 
     logger = logging.getLogger('logger')
-    logging.basicConfig(level=logging.WARNING, filename="error_heap.log", filemode="w")
+    logging.basicConfig(level=logging.INFO, filename="error_heap.log", filemode="w")
+    logger.info(f'{file_name}')
 
     for start_tc, stop_tc, label_tc in transcription_entries:
         i = 0
@@ -48,8 +49,7 @@ def replace_blank_translation(file_name):  # new_version to rewrite. save outsid
             mess = f'No translation in {file_name} for {start_tc}, {stop_tc}, {label_tc}'
             print(mess)
             logger.warning(mess)
-    logger.warning('\n')
-
+    logger.info(f'END\n')
     new_translation_entries.sort(key=lambda x: x[0])
 
     new_translation = translation.new(name='2', entryList=new_translation_entries)
