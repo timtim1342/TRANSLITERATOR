@@ -1,5 +1,5 @@
 from functools import wraps
-from hp import GridTextTranscribed
+from gridtext import GridTextTranscribed
 
 
 def write_html_header(func):

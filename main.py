@@ -25,7 +25,7 @@ def translit_dict():  # old_version to rewrite
 
 
 if __name__ == '__main__':
-    path_to_test_tg = join('cyrillic_textgrids', 'tkt2019_aishat_a.TextGrid')
+    path_to_test_tg = join('cyrillic_textgrids', 'TEST.TextGrid')
     tiernames = ['2', '1']
 
     # try:
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     print(GridTextTranscribed.get_labels(transliterated_test_tg.latin_transcription))
 
     # save
-    path_to_test_tg_save = join('latin_textgrids', 'test_tkt2019_aishat_a.TextGrid')
+    path_to_test_tg_save = join('latin_textgrids', 'test_TEST.TextGrid')
     transliterated_test_tg.save_tg(path_to_test_tg_save)
 
     # align boundaries and save

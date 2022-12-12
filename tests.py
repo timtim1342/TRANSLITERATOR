@@ -1,4 +1,4 @@
-from hp import GridText, GridTextTranscribed, transliterate
+from gridtext import GridText, GridTextTranscribed, transliterate
 from praatio import textgrid
 from setup_logger import logger
 
