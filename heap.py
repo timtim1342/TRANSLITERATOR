@@ -8,7 +8,7 @@ def write_html_header(func):
         header = """ <!DOCTYPE html>
         <html>
         <head>
-        <meta charset="utf-8">
+        <meta charset="utf-16">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <!-- Bootstrap CSS -->
@@ -41,7 +41,7 @@ def write_html_header(func):
         <br>
         <br>
         """
-        with open("text_heap.html", 'a', encoding="UTF-8") as html:
+        with open("text_heap.html", 'a', encoding="UTF-16") as html:
             html.write(header)
 
         func()
@@ -52,14 +52,14 @@ def write_html_header(func):
         </body>
         </html>
         """
-        with open("text_heap.html", 'a', encoding="UTF-8") as html:
+        with open("text_heap.html", 'a', encoding="UTF-16") as html:
             html.write(bottom)
 
     return wrapper
 
 
 def put_text(tg):
-    with open("text_heap.html", 'a', encoding="UTF-8") as html:
+    with open("text_heap.html", 'a', encoding="UTF-16") as html:
         html.write("""<nav class="navbar navbar-expand-lg navbar-light bg-light rounded"><div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample10">
       <ul class="navbar-nav"><li class="nav-item active"><a class="nav-link" href="#"><h2><b>"""
                    + tg.filename)
