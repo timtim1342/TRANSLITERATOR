@@ -2,4 +2,4 @@
 
 TODO: конкорданс со статистикой по словам, диалоги
 
-[Step by step](https://github.com/timtim1342/tukita_translit/blob/main/main.ipynb)
+[see notebook for workflow](https://github.com/timtim1342/tukita_translit/blob/main/main.ipynb)
