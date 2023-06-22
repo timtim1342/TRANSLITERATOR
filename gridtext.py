@@ -85,9 +85,22 @@ class GridTextTranscribed(GridText):
     def add_to_concordance(self):
         pass
 
+def get_translit_dict(filename):  # old_version to rewrite
+    with open(filename, 'r', encoding='UTF-8') as f:
+        txt = f.read()
+    txt_list = txt.split('\n')
+    txt_list = [i.split(',') for i in txt_list]
+    translit_dict = {i[0]: i[1] for i in txt_list if len(i) == 2 and i[0] != ''}
+
+    translit_dict_cap = {}
+    for key in translit_dict.keys(): #  ad capitals
+        translit_dict_cap[key.capitalize()] = translit_dict[key].capitalize()
+    translit_dict.update(translit_dict_cap)
+
+    return translit_dict
 
 def transliterate(word, transliteration_dict):
-    word = '^' + word
+    word = '^' + word.replace('!', '1')  # .replace in case of Mehweb
     transliteration_dict = dict(sorted(transliteration_dict.items(), reverse=True, key=lambda x: len(x[0])))
     for sym in transliteration_dict.keys():
         word = word.replace(sym, transliteration_dict[sym])
