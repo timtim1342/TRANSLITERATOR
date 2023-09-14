@@ -2,6 +2,8 @@ from praatio import textgrid
 from praatio.praatio_scripts import alignBoundariesAcrossTiers
 from praatio.utilities.constants import Interval
 
+from os.path import join
+
 
 class GridText:
     def __init__(self, filename, translation, cyrillic_transcription):
@@ -31,9 +33,9 @@ class GridText:
 
         return labels
 
-    def transliterate_tg(self, latin_transcription_name, transliteration_dict):
+    def transliterate(self, latin_transcription_name, transliteration_dict):
         latin_transcription_entries = [
-            (start, stop, ' '.join([transliterate(word, transliteration_dict) for word in label.split()]))
+            (start, stop, ' '.join([transliterate_string(word, transliteration_dict) for word in label.split()]))
             for start, stop, label in self.cyrillic_transcription.entryList]
 
         latin_transcription = self.cyrillic_transcription.new(name=latin_transcription_name,
@@ -85,25 +87,39 @@ class GridTextTranscribed(GridText):
     def add_to_concordance(self):
         pass
 
-def get_translit_dict(filename):  # old_version to rewrite
-    with open(filename, 'r', encoding='UTF-8') as f:
-        txt = f.read()
-    txt_list = txt.split('\n')
-    txt_list = [i.split(',') for i in txt_list]
-    translit_dict = {i[0]: i[1] for i in txt_list if len(i) == 2 and i[0] != ''}
 
-    translit_dict_cap = {}
-    for key in translit_dict.keys(): #  ad capitals
-        translit_dict_cap[key.capitalize()] = translit_dict[key].capitalize()
-    translit_dict.update(translit_dict_cap)
+def get_translit_dictionary(dictionary_path, separator=';'):
+    """parse the csv file with symbol pairs and transfer it to the dict type"""
 
-    return translit_dict
+    with open(dictionary_path, 'r', encoding='UTF-8') as f:
+        raw_dictionary = [pair.split(separator) for pair in f.read().split('\n')]
+    translit_dictionary = {pair[0]: pair[1] for pair in raw_dictionary if len(pair) == 2 and pair[0] != ''}
+    translit_dictionary.update({key.capitalize(): translit_dictionary[key].capitalize()
+                                for key in translit_dictionary.keys()})   # add capitals
 
-def transliterate(word, transliteration_dict):
-    word = '^' + word.replace('!', '1')  # .replace in case of Mehweb
-    transliteration_dict = dict(sorted(transliteration_dict.items(), reverse=True, key=lambda x: len(x[0])))
-    for sym in transliteration_dict.keys():
-        word = word.replace(sym, transliteration_dict[sym])
+    return translit_dictionary
+
+
+def transliterate_string(word, translit_dictionary):
+    """transliterates a string"""
+
+    word = '^' + word
+    translit_dictionary = dict(sorted(translit_dictionary.items(), reverse=True, key=lambda x: len(x[0])))
+
+    for cyrillic_symbol in translit_dictionary.keys():
+        latin_symbol = translit_dictionary[cyrillic_symbol]
+        word = word.replace(cyrillic_symbol, latin_symbol)
     word = word.replace('^', '')
     return word
 
+
+def transliterate_tg(tg_path, translit_dictionary, tier_names, latin_tier_name):
+    """transliterates a TextGrid file"""
+
+    tg = GridText.from_tg_file(tg_path, *tier_names)
+    transliterated_tg = tg.transliterate(latin_tier_name, translit_dictionary)
+
+    tg.replace_blank_translation()
+
+    output_path = tg_path.replace('cyrillic_textgrids', 'latin_textgrids')
+    transliterated_tg.save_tg(output_path)

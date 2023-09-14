@@ -1,4 +1,4 @@
-from gridtext import GridText, GridTextTranscribed, transliterate
+from gridtext import GridText, GridTextTranscribed, transliterate_tg
 from praatio import textgrid
 from setup_logger import logger
 
