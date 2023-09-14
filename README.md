@@ -1,5 +1,3 @@
-Проект по транслитерации, валидации и сбору в один html файл для более удобной работы текстгридов с расшифрованными текстами.
+[See notebook for the transliteration workflow](https://colab.research.google.com/github/timtim1342/tukita_translit/blob/main/main.ipynb)
 
-TODO: конкорданс со статистикой по словам, диалоги, сохранение исходного слоя с комментарием
-
-[see notebook for workflow](https://colab.research.google.com/github/timtim1342/tukita_translit/blob/main/main.ipynb)
+TODO: statistics, dialogues, save comment tier
