@@ -41,7 +41,7 @@ def write_html_header(func):
         <br>
         <br>
         """
-        with open("text_heap.html", 'a', encoding="UTF-16") as html:
+        with open("text_heap_light.html", 'a', encoding="UTF-16") as html:
             html.write(header)
 
         func()
@@ -52,14 +52,14 @@ def write_html_header(func):
         </body>
         </html>
         """
-        with open("text_heap.html", 'a', encoding="UTF-16") as html:
+        with open("text_heap_light.html", 'a', encoding="UTF-16") as html:
             html.write(bottom)
 
     return wrapper
 
 
 def put_text_light(tg):
-    with open("text_heap.html", 'a', encoding="UTF-16") as html:
+    with open("text_heap_light.html", 'a', encoding="UTF-16") as html:
         html.write("""<nav class="navbar navbar-expand-lg navbar-light bg-light rounded"><div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample10">
       <ul class="navbar-nav"><li class="nav-item active"><a class="nav-link" href="#"><h2><b>"""
                    + tg.filename)
@@ -75,7 +75,7 @@ def put_text_light(tg):
         html.write(f"\n\n<i><p>{'<br>'.join(GridTextTranscribed.get_labels(tg.translation))} \'</p></i><hr>\n\n")
 
 def counts(unique_words_dictionary):
-    with open("text_heap.html", 'a', encoding="UTF-16") as html:
+    with open("text_heap_light.html", 'a', encoding="UTF-16") as html:
         html.write(f'Non-unique words: {unique_words_dictionary.total()}<br>')
         html.write(f'Unique words (no punctuation): {len(unique_words_dictionary)}<br>')
         html.write(f'<br>Top-100: {unique_words_dictionary.most_common(100)}')

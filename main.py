@@ -8,7 +8,7 @@ tier_names = ['2', '1']  # [translation tier, transcription tier]
 latin_tier = '3'
 translit_dictionary = get_translit_dictionary('transl_dict_tukita.csv', separator=',')  # name of transliteration dictionary
 
-with open("text_heap.html", 'w', encoding="UTF-16") as html:
+with open("text_heap_light.html", 'w', encoding="UTF-16") as html:
     pass
 
 for root, dirs, files in walk('cyrillic_textgrids'):
