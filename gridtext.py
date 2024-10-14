@@ -51,7 +51,7 @@ class GridText:
             for i, interval in enumerate(translation_entries):
                 start_tl, stop_tl, label_tl = interval
                 if start_tc == start_tl and label_tl == '' and len(label_tc) > 0:
-                    self.translation.entryList[i] = Interval(start_tl, stop_tl, label_tc)
+                    self.translation.entryList[i] = Interval(start_tl, stop_tl, 'NO TRANSLATION')
                     break
 
     def save_tg(self, save_path):
@@ -73,7 +73,7 @@ class GridTextTranscribed(GridText):
     def from_tg_file(cls, filepath, translation_name, cyrillic_transcription_name, latin_transcription_name, align=False):
 
         if align:
-            tg = alignBoundariesAcrossTiers(filepath, maxDifference=0.1)  # note! also merge blank values
+            tg = alignBoundariesAcrossTiers(filepath, maxDifference=0.2)  # note! also merge blank values
             # !make it after loading cyr tg and tests!
         else:
             tg = textgrid.openTextgrid(filepath, includeEmptyIntervals=True)
@@ -113,13 +113,14 @@ def transliterate_string(word, translit_dictionary):
     return word
 
 
-def transliterate_tg(tg_path, translit_dictionary, tier_names, latin_tier_name):
+def transliterate_tg(tg_path, translit_dictionary, tier_names, latin_tier_name, replace_blanc_translation=False):
     """transliterates a TextGrid file"""
 
     tg = GridText.from_tg_file(tg_path, *tier_names)
     transliterated_tg = tg.transliterate(latin_tier_name, translit_dictionary)
 
-    tg.replace_blank_translation()
+    if replace_blanc_translation:
+        tg.replace_blank_translation()
 
     output_path = tg_path.replace('cyrillic_textgrids', 'latin_textgrids')
     transliterated_tg.save_tg(output_path)
