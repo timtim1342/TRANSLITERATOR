@@ -1,23 +1,23 @@
+import string
+
 from praatio import textgrid
 from praatio.praatio_scripts import alignBoundariesAcrossTiers
 from praatio.utilities.constants import Interval
-
-from os.path import join
-
+from collections import Counter
 
 class GridText:
     def __init__(self, filename, translation, cyrillic_transcription):
         self.filename = filename
         self.translation = translation
         self.cyrillic_transcription = cyrillic_transcription
-        self.length = 5
+        #self.length =
         self.tiers = [translation, cyrillic_transcription]
 
     @classmethod
     def from_tg_file(cls, filepath, translation_name, cyrillic_transcription_name, align=False):
 
         if align:
-            tg = alignBoundariesAcrossTiers(filepath, maxDifference=0.1)  # note! also merge blank values
+            tg = alignBoundariesAcrossTiers(filepath, maxDifference=0.2)  # note! also merge blank values
             # !make it after loading cyr tg and tests!
         else:
             tg = textgrid.openTextgrid(filepath, includeEmptyIntervals=True)
@@ -43,7 +43,7 @@ class GridText:
 
         return GridTextTranscribed(self.filename, self.translation, self.cyrillic_transcription, latin_transcription)
 
-    def replace_blank_translation(self):  # add Interval class and rewrite (repeat code in tests)
+    def replace_blank_translation(self):  # add Interval class and rewrite (repeat code in tests) UPD: remove not very usefull
         transcription_entries = self.cyrillic_transcription.entryList
         translation_entries = self.translation.entryList
 
@@ -62,7 +62,7 @@ class GridText:
 
 
 class GridTextTranscribed(GridText):
-    concordance = {}
+    concordance = Counter()
 
     def __init__(self, filename, translation, cyrillic_transcription, latin_transcription):
         super().__init__(filename, translation, cyrillic_transcription)
@@ -85,7 +85,8 @@ class GridTextTranscribed(GridText):
         return GridTextTranscribed(filepath, translation, cyrillic_transcription, latin_transcription)
 
     def add_to_concordance(self):
-        pass
+        words = ' '.join(GridTextTranscribed.get_labels(self.latin_transcription)).translate(str.maketrans('', '', string.punctuation)).split()
+        GridTextTranscribed.concordance.update(words)
 
 
 def get_translit_dictionary(dictionary_path, separator=';'):

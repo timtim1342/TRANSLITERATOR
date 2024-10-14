@@ -58,25 +58,27 @@ def write_html_header(func):
     return wrapper
 
 
-def put_text(tg):
+def put_text_light(tg):
     with open("text_heap.html", 'a', encoding="UTF-16") as html:
         html.write("""<nav class="navbar navbar-expand-lg navbar-light bg-light rounded"><div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample10">
       <ul class="navbar-nav"><li class="nav-item active"><a class="nav-link" href="#"><h2><b>"""
                    + tg.filename)
         html.write("""\n</b></h2><span class="sr-only">(current)</span></a></li></ul></div></nav>""")
 
-        for interval_number in range(tg.length):  # change to time
-            translation, cyrillic_transcription, latin_transcription = GridTextTranscribed.get_labels(tg.translation),\
-                GridTextTranscribed.get_labels(tg.cyrillic_transcription),\
+        for interval_number in range(len(GridTextTranscribed.get_labels(tg.latin_transcription))):  # change to time
+            cyrillic_transcription, latin_transcription = GridTextTranscribed.get_labels(tg.cyrillic_transcription),\
                 GridTextTranscribed.get_labels(tg.latin_transcription)
 
-            html.write(cyrillic_transcription[interval_number] + '\n' + '<br>')
-            html.write(latin_transcription[interval_number] + '\n')
+            html.write(f'{interval_number}: {cyrillic_transcription[interval_number]}<br>--- {latin_transcription[interval_number]}')
+            html.write('<br>')
 
-            html.write("\n\n<i><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\' " + translation[interval_number] + " \'</p></i><hr>\n\n")
+        html.write(f"\n\n<i><p>{'<br>'.join(GridTextTranscribed.get_labels(tg.translation))} \'</p></i><hr>\n\n")
 
-        html.write("""<br><br><br>""")
-
+def counts(unique_words_dictionary):
+    with open("text_heap.html", 'a', encoding="UTF-16") as html:
+        html.write(f'Non-unique words: {unique_words_dictionary.total()}<br>')
+        html.write(f'Unique words (no punctuation): {len(unique_words_dictionary)}<br>')
+        html.write(f'<br>Top-100: {unique_words_dictionary.most_common(100)}')
 
 def make_heap(some_tg):
-    put_text(some_tg)
+    put_text_light(some_tg)
