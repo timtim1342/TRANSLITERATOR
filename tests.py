@@ -31,6 +31,6 @@ class TestGridText:
 
             else:
                 mess = f'No corresponding translation in {self.test_tg.filename} for {start_tc}, {stop_tc}, {label_tc}'
-                print(mess)
+                #print(mess)
                 logger.warning(mess)
 

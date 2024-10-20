@@ -43,16 +43,35 @@ class GridText:
 
         return GridTextTranscribed(self.filename, self.translation, self.cyrillic_transcription, latin_transcription)
 
-    def replace_blank_translation(self):  # add Interval class and rewrite (repeat code in tests) UPD: remove not very usefull
+    def align_translation(self):  # add Interval class and rewrite (partially repeat code in tests)
         transcription_entries = self.cyrillic_transcription.entryList
         translation_entries = self.translation.entryList
+        translation_entries_new = []
+        translation_index = 0
 
-        for start_tc, stop_tc, label_tc in transcription_entries:
-            for i, interval in enumerate(translation_entries):
-                start_tl, stop_tl, label_tl = interval
-                if start_tc == start_tl and label_tl == '' and len(label_tc) > 0:
-                    self.translation.entryList[i] = Interval(start_tl, stop_tl, 'NO TRANSLATION')
+        try:
+            start_tl, stop_tl, label_tl = translation_entries[translation_index]
+        except IndexError:
+            start_tl, stop_tl, label_tl = 0, 0, ''
+
+        for sentence_index, interval in enumerate(transcription_entries):
+            start_tc, stop_tc, label_tc = interval
+            new_label_tl = 'NO TRANSLATION'
+
+            while start_tl <= start_tc and stop_tl <= stop_tc:
+                if start_tc == start_tl and stop_tc == stop_tl:  # corresponding translation found (including empty)
+                    new_label_tl = label_tl
                     break
+
+                if translation_index + 1 < len(translation_entries):  # problem with the last entry
+                    translation_index += 1
+                    start_tl, stop_tl, label_tl = translation_entries[translation_index]
+                else:
+                    break
+
+            translation_entries_new.append(Interval(start_tc, stop_tc, new_label_tl))
+
+        self.translation.entryList = translation_entries_new
 
     def save_tg(self, save_path):
         tg = textgrid.Textgrid()

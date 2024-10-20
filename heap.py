@@ -68,11 +68,14 @@ def put_text_light(tg):
         for interval_number in range(len(GridTextTranscribed.get_labels(tg.latin_transcription))):  # change to time
             cyrillic_transcription, latin_transcription = GridTextTranscribed.get_labels(tg.cyrillic_transcription),\
                 GridTextTranscribed.get_labels(tg.latin_transcription)
+            translation = GridTextTranscribed.get_labels(tg.translation)
 
-            html.write(f'{interval_number}: {cyrillic_transcription[interval_number]}<br>--- {latin_transcription[interval_number]}')
+            html.write(f'{interval_number}: {cyrillic_transcription[interval_number]}<br>'
+                       f'--- {latin_transcription[interval_number]}<br>'
+                       f'--- {translation[interval_number]}<br>')
             html.write('<br>')
 
-        html.write(f"\n\n<i><p>{'<br>'.join(GridTextTranscribed.get_labels(tg.translation))} \'</p></i><hr>\n\n")
+        html.write(f"\n\n<hr>\n\n")
 
 def counts(unique_words_dictionary):
     with open("text_heap_light.html", 'a', encoding="UTF-16") as html:

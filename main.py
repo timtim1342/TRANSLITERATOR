@@ -39,6 +39,9 @@ for root, dirs, files in walk('cyrillic_textgrids'):
             # Save
             transliterated_tg.save_tg(path_to_transliterated_tg)
 
+            # Align translation and transcription by fulfilling empty translation intervals
+            transliterated_tg.align_translation()
+
             #print(f'Transliterartion DONE: {filename}')
 
             # Heap (light version)
