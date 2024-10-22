@@ -1,5 +1,6 @@
 import string
 
+import praatio.utilities.errors
 from praatio import textgrid
 from praatio.praatio_scripts import alignBoundariesAcrossTiers
 from praatio.utilities.constants import Interval
@@ -91,11 +92,14 @@ class GridTextTranscribed(GridText):
     @classmethod
     def from_tg_file(cls, filepath, translation_name, cyrillic_transcription_name, latin_transcription_name, align=False):
 
+        tg = textgrid.openTextgrid(filepath, includeEmptyIntervals=True)
+
         if align:
-            tg = alignBoundariesAcrossTiers(filepath, maxDifference=0.2)  # note! also merge blank values
-            # !make it after loading cyr tg and tests!
-        else:
-            tg = textgrid.openTextgrid(filepath, includeEmptyIntervals=True)
+            try:
+                tg = alignBoundariesAcrossTiers(filepath, maxDifference=0.2)  # note! also merge blank values
+                # !make it after loading cyr tg and tests!
+            except praatio.utilities.errors.UnexpectedError:
+                print(f'Alignment failed in {filepath}')
 
         translation, cyrillic_transcription, latin_transcription = tg.tierDict[translation_name], \
             tg.tierDict[cyrillic_transcription_name], \
