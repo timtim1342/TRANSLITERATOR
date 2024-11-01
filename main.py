@@ -4,9 +4,9 @@ from gridtext import GridTextTranscribed, transliterate_tg, get_translit_diction
 from heap import make_heap, counts
 from tests import TestGridText, TestTextGridFile
 
-tier_names = ['2', '1']  # [translation tier, transcription tier]
-latin_tier = '3'
-translit_dictionary = get_translit_dictionary('transl_dict_tukita.csv', separator=',')  # name of transliteration dictionary
+tier_names = ['translation', 'transcription_cyr']  # [translation tier, transcription tier]
+latin_tier = 'transcription_lat'
+translit_dictionary = get_translit_dictionary('transl_dict_botlikh.csv', separator=',')  # name of transliteration dictionary
 
 with open("text_heap.html", 'w', encoding="UTF-16") as html:
     pass
@@ -27,10 +27,10 @@ for root, dirs, files in walk('cyrillic_textgrids'):
             transliterate_tg(path_to_tg, translit_dictionary, tier_names, latin_tier)
 
             # Align
-            latin_tier_names = ['2', '1', '3']
+            latin_tier_names = ['translation', 'transcription_cyr', 'transcription_lat']
             transliterated_tg = GridTextTranscribed.from_tg_file(path_to_transliterated_tg,
                                                                  *latin_tier_names,
-                                                                 align=True)  # note! also merge blank values
+                                                                 align=False)  # note! if True also merge blank values
 
             # Test 2: no translation
             test_test = TestGridText(transliterated_tg)
