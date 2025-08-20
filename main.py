@@ -6,7 +6,7 @@ from tests import TestGridText, TestTextGridFile
 
 tier_names = ['translation', 'transcription_cyr']  # [translation tier, transcription tier]
 latin_tier = 'transcription_lat'
-translit_dictionary = get_translit_dictionary('transl_dict_botlikh.csv', separator=',')  # name of transliteration dictionary
+translit_dictionary = get_translit_dictionary('transl_dict_lak.csv', separator=';')  # name of transliteration dictionary
 
 with open("text_heap.html", 'w', encoding="UTF-16") as html:
     pass
@@ -30,7 +30,7 @@ for root, dirs, files in walk('cyrillic_textgrids'):
             latin_tier_names = ['translation', 'transcription_cyr', 'transcription_lat']
             transliterated_tg = GridTextTranscribed.from_tg_file(path_to_transliterated_tg,
                                                                  *latin_tier_names,
-                                                                 align=False)  # note! if True also merge blank values
+                                                                 align=True)  # note! if True also merge blank values
 
             # Test 2: no translation
             test_test = TestGridText(transliterated_tg)
